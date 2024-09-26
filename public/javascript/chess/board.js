@@ -66,28 +66,36 @@ Board.prototype.clearSelection = function(){
     this.clearSelection();    
     const clickedCell = this.getClickedBlock(event);
     const selectedPiece = this.getPieceAt(clickedCell);
-    // this.selectPiece(event.target, selectedPiece);
-    if(selectedPiece){
-        //Add 'selected' class to the clicked piece    
-        if(!this.selectedPiece && this.currentPlayer !== selectedPiece.color){
+
+    if (selectedPiece) {
+        // Check if the selected piece's color matches the current player
+        if (!this.selectedPiece && this.currentPlayer !== selectedPiece.color) {
             console.warn(`It's ${this.currentPlayer}'s turn!`);
             this.invalidMove();
             return;
         }
-        if(selectedPiece && this.currentPlayer === selectedPiece.color){
+        if (this.currentPlayer === selectedPiece.color) {
             this.selectPiece(event.target, selectedPiece);
         } else {
-            this.selectedPiece.moveTo(clickedCell);
-            this.clearSelection();
+            // Attempt to move the selected piece to the clicked cell
+            const moveSuccessful = this.selectedPiece.moveTo(clickedCell);
+            if (moveSuccessful) {
+                this.clearSelection(); // Clear selection only if move is successful
+                this.switchPlayer(); // Switch the player turn here
+            }
         }
-        
-    }else{
-        //update position of the selected piece to new position
-        if(this.selectedPiece){
-            this.selectedPiece.moveTo(clickedCell);        
-        }                
+    } else {
+        // If there's no selected piece, move the selected piece if it exists
+        if (this.selectedPiece) {
+            const moveSuccessful = this.selectedPiece.moveTo(clickedCell);
+            if (moveSuccessful) {
+                this.clearSelection();
+                this.switchPlayer(); // Switch the player turn here
+            }                
+        }        
     }    
 }
+
 
 Board.prototype.getPieceAt = function(cell){
     if (!cell || !cell.row || !cell.col) {
