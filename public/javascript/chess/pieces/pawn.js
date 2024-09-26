@@ -37,7 +37,7 @@ Pawn.prototype.moveTo = function(targetPosition, switchPlayer){
     if(this.isValidPosition(targetPosition)){
         this.position = targetPosition.col + targetPosition.row;
         this.render();
-        switchPlayer();
+        this.board.switchPlayer();
     }else{
         //NOOP
     }
