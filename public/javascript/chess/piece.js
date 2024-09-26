@@ -9,6 +9,10 @@ Piece.prototype.moveTo = function(targetPosition){
     console.log("Method not implemeted by: " + this.type);
 }
 
+Piece.prototype.isValidPosition = function(targetPosition) {
+    console.warn("Validation not implemented for: " + this.type);
+    return false; // Default to false for unimplemented checks
+};
 
 Piece.prototype.attachListeners = function(){
     //To be implemented

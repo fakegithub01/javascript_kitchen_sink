@@ -1,6 +1,7 @@
 var Board = function(config){
     this.root_id = config.root_id;
     this.$el = document.getElementById(this.root_id);
+    this.currentPlayer = 'white';
     this.generateBoardDom();
     this.addListeners();
 }
@@ -57,6 +58,10 @@ Board.prototype.clearSelection = function(){
     });
 };
 
+ Board.prototype.switchPlayer = function(){
+    this.currentPlayer = this.currentPlayer === 'white' ? 'black' : 'white';
+ };
+
 Board.prototype.boardClicked = function(event){    
     this.clearSelection();    
     const clickedCell = this.getClickedBlock(event);
@@ -67,7 +72,13 @@ Board.prototype.boardClicked = function(event){
     }else{
         //update position of the selected piece to new position
         if(this.selectedPiece){
-            this.selectedPiece.moveTo(clickedCell);        
+            if(this.selectedPiece.color === this.currentPlayer){
+                
+                this.selectedPiece.moveTo(clickedCell, this.switchPlayer.bind(this), this.currentPlayer); 
+
+            }else{
+                console.warn(this.currentPlayer+"'s turn");
+            }
         }                
     }    
 }

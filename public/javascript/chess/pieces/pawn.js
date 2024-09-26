@@ -26,10 +26,6 @@ Pawn.prototype.isValidPosition = function(targetPosition){
             // Initial two-square move
             return true;
         }
-    } else if (Math.abs(targetPosition.col.charCodeAt(0) - currentCol.charCodeAt(0)) === 1 &&
-               targetPosition.row === (currentRow + moveDistance).toString()) {
-        // Diagonal capture (assuming there's an enemy piece, which should be checked in the main game logic)
-        return true;
     }
 
     // If none of the above conditions are met, the move is invalid
@@ -37,10 +33,11 @@ Pawn.prototype.isValidPosition = function(targetPosition){
     return false;
 }
 
-Pawn.prototype.moveTo = function(targetPosition){    
+Pawn.prototype.moveTo = function(targetPosition, switchPlayer){    
     if(this.isValidPosition(targetPosition)){
         this.position = targetPosition.col + targetPosition.row;
         this.render();
+        switchPlayer();
     }else{
         //NOOP
     }
